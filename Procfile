@@ -1,1 +1,1 @@
-web: gunicorn apka13:app
+web: gunicorn apka-kurs:app
