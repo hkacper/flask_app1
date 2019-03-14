@@ -14,7 +14,7 @@ def method():
 @app.route('/show_data', methods = ['POST'])
 def show_data():
     data = request.get_json()
-    return str(data)
+    print (data)
 
 
 if __name__ == '__main__':
