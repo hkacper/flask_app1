@@ -15,5 +15,10 @@ def method():
 def show_data():    
     return jsonify(request.get_json())
 
+@app.route('/pretty_print_name', methods = ["POST"])
+def pretty_print_name():
+    response = request.get_json()
+    return f'Na imię mu {response.name}, a nazwisko jego {response.surname}'
+
 if __name__ == '__main__':
     app.run(debug=True)
