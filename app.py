@@ -13,8 +13,8 @@ def method():
 
 @app.route('/show_data', methods = ['POST'])
 def show_data():
-    data = request.get_json()
-    print (data)
+    return str(request.get_json())
+    
 
 
 if __name__ == '__main__':
