@@ -11,9 +11,9 @@ def hello():
 def method():
     return request.method
 
-@app.route('/show_data', methods = ['GET', 'PUT', 'DELETE' 'POST'])
+@app.route('/show_data', methods = ['GET'])
 def show_data():
-    return str(request.get_json(force=True))
+    return str = str.replace("\'", "\"")(request.get_json(force=True))
 
 
 if __name__ == '__main__':
