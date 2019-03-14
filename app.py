@@ -13,7 +13,7 @@ def method():
 
 @app.route('/show_data', methods = ['GET'])
 def show_data():
-    return str = str.replace("\'", "\"")(request.get_json(force=True))
+    return request.get_json(force=True).replace("\'", "\"")
 
 
 if __name__ == '__main__':
