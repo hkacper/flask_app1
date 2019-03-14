@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import json
 app = Flask(__name__)
-counter = 0
+app.counter = 0
 
 @app.route('/')
 def hello():
@@ -22,8 +22,8 @@ def pretty_print_name():
 
 @app.route('/counter')
 def counter():
-    counter += 1
-    return counter
+    app.counter += 1
+    return app.counter
 
 if __name__ == '__main__':
     app.run(debug=True)
