@@ -11,7 +11,7 @@ def hello():
 def method():
     return request.method
 
-@app.route('/show_data', methods = ['GET'])
+@app.route('/show_data', methods = ['POST'])
 def show_data():
     return request.get_json().jsonify()
 
