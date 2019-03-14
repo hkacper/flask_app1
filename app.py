@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import json
 app = Flask(__name__)
 
@@ -13,7 +13,7 @@ def method():
 
 @app.route('/show_data', methods = ['POST'])
 def show_data():
-    return request.get_json()
+    return jsonify(request.get_json())
     
 
 
