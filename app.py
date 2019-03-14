@@ -8,7 +8,7 @@ def hello():
 
 @app.route('/method')
 def method():
-    return request.method
+    return make_response()
 
 if __name__ == '__main__':
     app.run(debug=True)
