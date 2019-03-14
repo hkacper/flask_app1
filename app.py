@@ -23,7 +23,7 @@ def pretty_print_name():
 @app.route('/counter')
 def counter():
     app.counter += 1
-    return app.counter
+    return str(app.counter)
 
 if __name__ == '__main__':
     app.run(debug=True)
