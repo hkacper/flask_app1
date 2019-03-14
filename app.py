@@ -12,9 +12,8 @@ def method():
     return request.method
 
 @app.route('/show_data', methods = ['POST'])
-def show_data():
-    x = request.get_json()
-    return jsonify(x)
+def show_data():    
+    return jsonify(request.get_json())
 
 if __name__ == '__main__':
     app.run(debug=True)
