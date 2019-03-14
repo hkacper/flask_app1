@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import json
 app = Flask(__name__)
-
+counter = 0
 
 @app.route('/')
 def hello():
@@ -19,6 +19,11 @@ def show_data():
 def pretty_print_name():
     response = jsonify(request.get_json())
     return f'Na imię mu {response.name}, a nazwisko jego {response.surname}'
+
+@app.route('/counter')
+def counter():
+    counter += 1
+    return counter
 
 if __name__ == '__main__':
     app.run(debug=True)
