@@ -17,8 +17,7 @@ def show_data():
 
 @app.route('/pretty_print_name', methods = ["POST"])
 def pretty_print_name():
-    response = jsonify(request.get_json())
-    return f'Na imię mu {response.name}, a nazwisko jego {response.surname}'
+    return f'Na imię mu {request.get_json()["name"]}, a nazwisko jego {request.get_json()["surename"]}'
 
 @app.route('/counter')
 def counter():
