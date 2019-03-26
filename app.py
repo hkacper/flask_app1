@@ -35,7 +35,7 @@ def pretty_print_name():
 @app.route('/login', methods = ['POST'])
 @auth.login_required
 def login():
-    redirect('https://apka-kurs.herokuapp.com/hello') 
+    return redirect('https://apka-kurs.herokuapp.com/hello') 
 
 @app.route('/counter')
 def counter():
