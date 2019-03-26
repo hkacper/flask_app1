@@ -3,7 +3,7 @@ import json
 app = Flask(__name__)
 app.counter = 0
 
-@app.route('/')
+@app.route('/', methods = ['GET'])
 def hello():
     return 'Hello, World!'
 
