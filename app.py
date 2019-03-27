@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, session, url_for, flash
+from flask import Flask, request, jsonify, redirect, session, url_for, flash, Response
 
 app = Flask(__name__)
 app.counter = 0
@@ -48,14 +48,14 @@ def please_authenticate():
 
 
 def requires_basic_auth(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return please_authenticate()
-        return func(*args, **kwargs)
-
-    return wrapper
+    def wraps(func):
+        def wrapper(*args, **kwargs):
+            auth = request.authorization
+            if not auth or not check_auth(auth.username, auth.password):
+                return please_authenticate()
+            return func(*args, **kwargs)
+        return wraps
+    return wraps
 
 
 @app.route('/login', methods=['GET', 'POST'])
