@@ -38,9 +38,9 @@ def counter():
 @app.route('/login', methods=["POST"])
 def login():
     if request.form['password'] == 'TuN3L' and request.form['username'] == 'TRAIN':
-    session['logged_in'] = True
+        session['logged_in'] = True
     else:
-    flash('wrong password!')
+        flash('wrong password!')
     return home()
 
 
