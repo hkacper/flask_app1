@@ -1,8 +1,16 @@
 from flask import Flask, request, jsonify, redirect, session, url_for, flash
 
 app = Flask(__name__)
-app.counter = 0
-app.secret_key = 'VFJBSU46VHVOM0w='
+app.permanent_session_lifetime = datetime.timedelta(days=365)
+
+def login_required(funkcja):
+    def dekorator(funkcja):
+        def wrapper(*args, **kwargs):
+            if request.authorization and request.authorization.username == 'TRAIN' and request.authorization.password == 'TuN3L':
+                return funkcja
+            return "invalid login"
+        return wrapper
+    return dekorator 
 
 
 @app.route('/', methods = ['GET'])
@@ -32,9 +40,14 @@ def pretty_print_name():
 
 @app.route('/counter')
 def counter():
-    app.counter += 1
-    return str(app.counter)
+    session['visits'] = session.get('visits', 0) + 1
+    return "Visists Count: {}".format(session.get('visits'))
 
+@app.route('/login', methods=['POST'])
+@login_required
+def login():
+    session['username'] = request.authorization.username
+    return redirect(url_for('hello'))
 
 
 if __name__ == '__main__':
