@@ -34,14 +34,35 @@ def pretty_print_name():
 def counter():
     app.counter += 1
     return str(app.counter)
+def check_auth(username, password):
+    """This function is called to check if a username password combination is
+    valid."""
+    return username == 'Akwarysta69' and password == 'J3si07r'
 
-@app.route('/login', methods=["POST"])
+
+def please_authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response('Could not verify your access level for that URL.\n'
+                    'You have to login with proper credentials', 401,
+                    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+
+def requires_basic_auth(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return please_authenticate()
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+@app.route('/login', methods=['GET', 'POST'])
+@requires_basic_auth
 def login():
-    if request.form['password'] == 'TuN3L' and request.form['username'] == 'TRAIN':
-        session['logged_in'] = True
-    else:
-        flash('wrong password!')
-        return home()
+    session['username'] = request.authorization.username
+    return redirect(url_for('hello'))
 
 
 
