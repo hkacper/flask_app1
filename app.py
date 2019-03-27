@@ -54,7 +54,7 @@ def requires_basic_auth(func):
             if not auth or not check_auth(auth.username, auth.password):
                 return please_authenticate()
             return func(*args, **kwargs)
-        return wraps
+        return wrapper
     return wraps
 
 
