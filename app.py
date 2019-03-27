@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, session, url_for
+from flask import Flask, request, jsonify, redirect, session, url_for, flash
 
 app = Flask(__name__)
 app.counter = 0
@@ -37,9 +37,12 @@ def counter():
 
 @app.route('/login', methods=["POST"])
 def login():
-    if request.session['username'] == 'TRAIN' and request.session['password'] == 'TuN3L':
-        return redirect(url_for('hello2'))
-    return 'invalid username or password'
+    if request.form['password'] == 'TuN3L' and request.form['username'] == 'TRAIN':
+    session['logged_in'] = True
+    else:
+    flash('wrong password!')
+    return home()
+
 
 
 if __name__ == '__main__':
