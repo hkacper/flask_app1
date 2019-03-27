@@ -41,7 +41,7 @@ def login():
         session['logged_in'] = True
     else:
         flash('wrong password!')
-    return home()
+        return home()
 
 
 
