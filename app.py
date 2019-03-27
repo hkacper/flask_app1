@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, session, url_for, flash, Response
+from flask import Flask, request, jsonify, redirect, session, url_for, flash
 
 app = Flask(__name__)
 app.counter = 0
@@ -34,35 +34,6 @@ def pretty_print_name():
 def counter():
     app.counter += 1
     return str(app.counter)
-def check_auth(username, password):
-    """This function is called to check if a username password combination is
-    valid."""
-    return username == 'TRAIN' and password == 'TuN3L'
-
-
-def please_authenticate():
-    """Sends a 401 response that enables basic auth"""
-    return Response('Could not verify your access level for that URL.\n'
-                    'You have to login with proper credentials', 401,
-                    {'WWW-Authenticate': 'Basic realm="Login Required"'})
-
-
-def requires_basic_auth(func):
-    def wraps(func):
-        def wrapper(*args, **kwargs):
-            auth = request.authorization
-            if not auth or not check_auth(auth.username, auth.password):
-                return please_authenticate()
-            return func(*args, **kwargs)
-        return wrapper
-    return wraps
-
-
-@app.route('/login', methods=['GET', 'POST'])
-@requires_basic_auth
-def login():
-    session['username'] = request.authorization.username
-    return redirect(url_for('hello'))
 
 
 
