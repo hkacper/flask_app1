@@ -37,7 +37,7 @@ def counter():
 def check_auth(username, password):
     """This function is called to check if a username password combination is
     valid."""
-    return username == 'Akwarysta69' and password == 'J3si07r'
+    return username == 'TRAIN' and password == 'TuN3L'
 
 
 def please_authenticate():
