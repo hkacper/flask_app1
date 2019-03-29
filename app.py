@@ -4,6 +4,7 @@ from functools import wraps
 
 app = Flask(__name__)
 #app.permanent_session_lifetime = datetime.timedelta(days=365)
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 def check_auth(username, password):
     return username == 'TRAIN' and password == 'TuN3L'
