@@ -58,7 +58,7 @@ def login():
 @app.route('/logout', methods = ['POST'])
 @requiered_auth
 def logout():
-    session.pop('username')
+    session.pop('username', None)
     return redirect(url_for('login'))    
 
 
