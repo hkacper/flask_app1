@@ -57,7 +57,7 @@ def counter():
 @requiered_auth
 def login():
     session['username'] = request.authorization.username
-    return redirect(url_for('hello'))
+    return redirect(url_for('hello2'))
 
 
 if __name__ == '__main__':
