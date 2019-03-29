@@ -48,11 +48,11 @@ def pretty_print_name():
 #    session['visits'] = session.get('visits', 0) + 1
 #    return "Visists Count: {}".format(session.get('visits'))
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 @requiered_auth
 def login():
     session['username'] = request.authorization.username
-    return redirect('https://apka-kurs.herokuapp.com/hello')
+    return redirect(url_for('hello'))
 
 
 if __name__ == '__main__':
