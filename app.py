@@ -27,26 +27,21 @@ def requiered_auth(funkcja):
 def hello2():
     return 'Hello, World!'
 
-
 @app.route('/hello', methods = ['GET'])
 def hello():
     return "Hello World!"
-
 
 @app.route('/method', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def method():
     return request.method
 
-
 @app.route('/show_data', methods = ['POST'])
 def show_data():    
     return jsonify(request.get_json())
 
-
 @app.route('/pretty_print_name', methods = ["POST"])
 def pretty_print_name():
     return f'Na imię mu {request.get_json()["name"]}, a nazwisko jego {request.get_json()["surename"]}'
-
 
 #@app.route('/counter')
 #def counter():
@@ -57,7 +52,7 @@ def pretty_print_name():
 @requiered_auth
 def login():
     session['username'] = request.authorization.username
-    return redirect(url_for('hello'))
+    return redirect('https://apka-kurs.herokuapp.com/hello')
 
 
 if __name__ == '__main__':
