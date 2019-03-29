@@ -1,17 +1,27 @@
-from flask import Flask, request, jsonify, redirect, session, url_for, flash
+from flask import Flask, request, jsonify, redirect, session, url_for, Response
+from functools import wraps
+import datetime
 
 app = Flask(__name__)
 app.permanent_session_lifetime = datetime.timedelta(days=365)
 
-def login_required(funkcja):
-    def dekorator(funkcja):
-        def wrapper(*args, **kwargs):
-            if request.authorization and request.authorization.username == 'TRAIN' and request.authorization.password == 'TuN3L':
-                return funkcja
-            return "invalid login"
-        return wrapper
-    return dekorator 
+def check_auth(username, password):
+    return username == 'TRAIN' and password == 'TuN3L'
 
+def authenticate():
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requiered_auth(funkcja):
+    @wraps(funkcja)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return funkcja(*args, **kwargs)
+    return decorated
 
 @app.route('/', methods = ['GET'])
 def hello2():
@@ -44,7 +54,7 @@ def counter():
     return "Visists Count: {}".format(session.get('visits'))
 
 @app.route('/login', methods=['POST'])
-@login_required
+@requiered_auth
 def login():
     session['username'] = request.authorization.username
     return redirect(url_for('hello'))
