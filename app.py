@@ -55,6 +55,13 @@ def login():
     session['username'] = request.authorization.username
     return redirect('https://apka-kurs.herokuapp.com/hello')
 
+@app.route('/logout', methods = ['POST'])
+@requiered_auth
+def logout():
+    if session['username'] != request.authorization.username:
+        return redirect(url_for('login'))    
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
