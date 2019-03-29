@@ -58,8 +58,11 @@ def login():
 @app.route('/logout', methods = ['POST'])
 @requiered_auth
 def logout():
+    if session['username'] != request.authorization.username:
+        session.pop('username', None)
+        return redirect(url_for('login'))    
     session.pop('username', None)
-    return redirect(url_for('login'))    
+    
 
 
 
