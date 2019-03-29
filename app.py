@@ -52,7 +52,7 @@ def pretty_print_name():
 @requiered_auth
 def login():
     session['username'] = request.authorization.username
-    return redirect('https://apka-kurs.herokuapp.com/')
+    return redirect('https://apka-kurs.herokuapp.com/hello')
 
 
 if __name__ == '__main__':
