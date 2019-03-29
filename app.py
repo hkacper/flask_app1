@@ -5,8 +5,8 @@ from functools import wraps
 app = Flask(__name__)
 #app.permanent_session_lifetime = datetime.timedelta(days=365)
 
-def check_auth(username, password):
-    return username == 'TRAIN' and password == 'TuN3L'
+def check_auth(login, password):
+    return login == 'TRAIN' and password == 'TuN3L'
 
 def authenticate():
     return Response(
@@ -18,7 +18,7 @@ def requiered_auth(funkcja):
     @wraps(funkcja)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
+        if not auth or not check_auth(auth.login, auth.password):
             return authenticate()
         return funkcja(*args, **kwargs)
     return decorated
@@ -51,7 +51,7 @@ def pretty_print_name():
 @app.route('/login', methods=['GET', 'POST'])
 @requiered_auth
 def login():
-    session['username'] = request.authorization.username
+    session['login'] = request.authorization.login
     return redirect('https://apka-kurs.herokuapp.com/hello')
 
 
