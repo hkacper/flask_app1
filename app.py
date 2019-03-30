@@ -84,7 +84,8 @@ def trains():
 def trains_id(id):
     if request.method = 'DELETE':
         del app.trains['id']
-        
+        return '', 204
+
 
 if __name__ == '__main__':
     app.run(debug=True)
