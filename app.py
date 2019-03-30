@@ -67,11 +67,10 @@ def login():
 @app.route('/logout', methods = ['GET', 'POST'])
 @requires_user_session
 def logout():
-    #if session['username'] != request.authorization.username:
-        session.pop('username', None)
-        return redirect(url_for('login'))    
-    #session.pop('username', None)
-    
+    if request.method == 'GET':
+        return redirect(url_for('login'))
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 
 
