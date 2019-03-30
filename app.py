@@ -58,7 +58,7 @@ def pretty_print_name():
 @required_auth
 def login():
     session['username'] = request.authorization.username
-    return redirect('https://apka-kurs.herokuapp.com/hello')
+    return redirect(url_for('hello'))
 
 @app.route('/logout', methods = ['GET', 'POST'])
 @requires_user_session
