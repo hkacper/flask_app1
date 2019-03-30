@@ -67,7 +67,7 @@ def logout():
     return redirect(url_for('hello2'))
 
 @app.route('/hello', methods = ['GET'])
-@required_auth
+@requires_user_session
 def hello():
     return render_template('greeting.html', user = session['username'])
 
