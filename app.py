@@ -15,7 +15,7 @@ def authenticate():
     'You have to login with proper credentials', 401,
     {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
-def requiered_auth(funkcja):
+def required_auth(funkcja):
     @wraps(funkcja)
     def decorated(*args, **kwargs):
         auth = request.authorization
@@ -23,6 +23,15 @@ def requiered_auth(funkcja):
             return authenticate()
         return funkcja(*args, **kwargs)
     return decorated
+
+def requires_user_session(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not session.get('username'):
+            return redirect(url_for('login'))
+        return func(*args, **kwargs)
+    return wrapper
+
 
 @app.route('/', methods = ['GET'])
 def hello2():
@@ -50,18 +59,18 @@ def pretty_print_name():
 #    return "Visists Count: {}".format(session.get('visits'))
 
 @app.route('/login', methods=['GET', 'POST'])
-@requiered_auth
+@required_auth
 def login():
     session['username'] = request.authorization.username
     return redirect('https://apka-kurs.herokuapp.com/hello')
 
 @app.route('/logout', methods = ['GET', 'POST'])
-@requiered_auth
+@requires_user_session
 def logout():
-    if session['username'] != request.authorization.username:
+    #if session['username'] != request.authorization.username:
         session.pop('username', None)
         return redirect(url_for('login'))    
-    session.pop('username', None)
+    #session.pop('username', None)
     
 
 
