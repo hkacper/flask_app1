@@ -65,7 +65,7 @@ def login():
     return redirect('https://apka-kurs.herokuapp.com/hello')
 
 @app.route('/logout', methods = ['GET', 'POST'])
-#@requires_user_session
+@requires_user_session
 def logout():
     #if request.method == 'GET':
     #    return redirect(url_for('hello2'))
