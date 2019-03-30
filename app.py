@@ -69,7 +69,7 @@ def logout():
 @app.route('/hello', methods = ['GET'])
 @required_auth
 def hello():
-    return render_template('greeting.html', user = session.username)
+    return render_template('greeting.html', user = session['username'])
 
 
 if __name__ == '__main__':
