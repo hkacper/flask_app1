@@ -68,9 +68,9 @@ def login():
 @requires_user_session
 def logout():
     if request.method == 'GET':
-        return redirect(url_for('login'))
+        return redirect(url_for('hello2'))
     session.pop('username', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('hello2'))
 
 
 
