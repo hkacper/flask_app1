@@ -20,7 +20,7 @@ def requiered_auth(funkcja):
     def decorated(*args, **kwargs):
         auth = request.authorization
         if not auth or not check_auth(auth.username, auth.password):
-            return redirect(url_for('login'))
+            return authenticate()
         return funkcja(*args, **kwargs)
     return decorated
 
