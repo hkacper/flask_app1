@@ -79,5 +79,12 @@ def trains():
     if request.method == 'GET':
         return jsonify(app.trains)
 
+@app.route('/trains/<id>', methods = ['GET', 'DELETE'])
+@session_required
+def trains_id(id):
+    if request.method = 'DELETE':
+        del app.trains['id']
+        
+
 if __name__ == '__main__':
     app.run(debug=True)
