@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, session, url_for, Response
+from flask import Flask, request, jsonify, redirect, session, url_for, Response, render_template
 from functools import wraps
 #import datetime
 
@@ -37,10 +37,6 @@ def requires_user_session(func):
 def hello2():
     return 'Hello, World!'
 
-@app.route('/hello', methods = ['GET'])
-def hello():
-    return "Hello World!"
-
 @app.route('/method', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def method():
     return request.method
@@ -67,11 +63,13 @@ def login():
 @app.route('/logout', methods = ['GET', 'POST'])
 @requires_user_session
 def logout():
-    #if request.method == 'GET':
-    #    return redirect(url_for('hello2'))
     session.pop('username', None)
     return redirect(url_for('hello2'))
 
+@app.route('/hello', methods = ['GET'])
+@requires_user_session
+def hello():
+    return render_template('greeting.html', user = session.username)
 
 
 if __name__ == '__main__':
