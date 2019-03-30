@@ -15,7 +15,7 @@ def authenticate():
     'You have to login with proper credentials', 401,
     {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
-def required_auth(funkcja):
+def auth_required(funkcja):
     @wraps(funkcja)
     def decorated(*args, **kwargs):
         auth = request.authorization
@@ -24,14 +24,13 @@ def required_auth(funkcja):
         return funkcja(*args, **kwargs)
     return decorated
 
-def requires_user_session(func):
-    @wraps(func)
+def session_required(funkcja):
+    @wraps(funkcja)
     def wrapper(*args, **kwargs):
         if not session.get('username'):
             return redirect(url_for('login'))
-        return func(*args, **kwargs)
+        return funkcja(*args, **kwargs)
     return wrapper
-
 
 @app.route('/', methods = ['GET'])
 def hello2():
@@ -55,19 +54,19 @@ def pretty_print_name():
 #    return "Visists Count: {}".format(session.get('visits'))
 
 @app.route('/login', methods=['GET', 'POST'])
-@required_auth
+@auth_required
 def login():
     session['username'] = request.authorization.username
     return redirect(url_for('hello'))
 
 @app.route('/logout', methods = ['GET', 'POST'])
-@requires_user_session
+@session_required
 def logout():
     session.pop('username', None)
     return redirect(url_for('hello2'))
 
 @app.route('/hello', methods = ['GET'])
-@requires_user_session
+@session_required
 def hello():
     return render_template('greeting.html', user = session['username'])
 
