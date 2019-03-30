@@ -70,6 +70,10 @@ def logout():
 def hello():
     return render_template('greeting.html', user = session['username'])
 
+@app.route('/trains', methods = ['GET', 'POST'])
+@session_required
+def trains():
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
