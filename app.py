@@ -71,28 +71,6 @@ def logout():
 def hello():
     return render_template('greeting.html', user = session['username'])
 
-@app.route('/trains', methods = ['GET', 'POST'])
-@session_required
-def trains():
-    if request.method == 'POST':
-        pass
-    if request.method == 'GET':
-        return jsonify(app.trains)
-
-@app.route('/trains/<id>', methods = ['GET', 'DELETE'])
-@session_required
-def trains_id(id):
-    if request.method = 'DELETE':
-        del app.trains['id']
-        return '', 204
-
-def get_train_from_json():
-    train_data = request.get_json()
-    if not train_data:
-        pass
-    return train_data
-
-
 def set_train(train_id=None, data=None, update=False):
     if train_id is None:
         train_id = str(uuid4())
