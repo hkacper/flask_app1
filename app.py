@@ -72,6 +72,12 @@ def logout():
 def hello():
     return render_template('greeting.html', user = session['username'])
 
+def get_train_from_json():
+    train_data = request.get_json()
+    if not train_data:
+        pass
+    return train_data
+
 def set_train(train_id=None, data=None, update=False):
     if train_id is None:
         train_id = str(uuid4())
