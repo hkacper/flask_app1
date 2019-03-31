@@ -86,6 +86,57 @@ def trains_id(id):
         del app.trains['id']
         return '', 204
 
+def get_train_from_json():
+    train_data = request.get_json()
+    if not train_data:
+        pass
+    return train_data
+
+
+def set_train(train_id=None, data=None, update=False):
+    if train_id is None:
+        train_id = str(uuid4())
+    if data is None:
+        data = get_train_from_json()
+        if data is None:
+            pass
+    if update:
+        app.trains[train_id].update(data)
+    else:
+        app.trains[train_id] = data
+
+    return train_id
+
+@app.route('/trains', methods=['GET', 'POST'])
+@session_required
+def trains():
+    if request.method == 'GET':
+        return jsonify(app.trains)
+    elif request.method == 'POST':
+        train_id = set_train()
+        return redirect(url_for('train', train_id=train_id, format='json'))
+
+@app.route('/trains/<train_id>', methods=['GET', 'PUT', 'PATCH', 'DELETE'])
+@session_required
+def train(train_id):
+    if train_id not in app.trains:
+        return 'No such train', 404
+
+    if request.method == 'DELETE':
+        del app.trains[train_id]
+        return Response('', 204)
+
+    if request.method == 'PUT':
+        set_train(train_id)
+    elif request.method == 'PATCH':
+        set_train(train_id, update=True)
+
+    if request.method == 'GET' and request.args.get('format') != 'json':
+        pass
+
+    return jsonify(app.trains[train_id])
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
