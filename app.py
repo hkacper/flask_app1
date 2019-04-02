@@ -124,7 +124,8 @@ def train(train_id):
 
 
 
-DATABASE = '/home/kacper/python_kurs_daftcode/moje/zadanie1/chinook.db'
+DATABASE = 'chinook.db'
+
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
