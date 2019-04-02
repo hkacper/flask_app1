@@ -135,10 +135,10 @@ def get_db():
 @app.route('/tracks', methods=['GET'])
 def tracks():
     db = get_db()
-    cursor = db.cursor()
-    data = cursor.execute('SELECT name FROM tracks ORDER BY ASC').fetchall()
-    cursor.close()
-    return jsonify(data)
+    #cursor = db.cursor()
+    data = db.execute('SELECT name FROM tracks ORDER BY ASC')
+    #cursor.close()
+    return jsonify([row[0] for row in data.fetchall()])
 
 
 
