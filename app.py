@@ -138,15 +138,18 @@ def tracks_list():
     if request.method == 'GET':
             if request.args.get('per_page') and request.args.get('page') and request.args.get('artist'):
                 per_page = request.args.get('per_page')
-                page = request.args.get('page')
+                page = request.args.get('page')* per_page
                 artist = request.args.get('artist')
                 if page == 1:
-                    data = cursor.execute("""select tracks from tracks limit ?""", ( per_page,)).fetchall()
+                    data = cursor.execute("""SELECT tracks.name FROM tracks
+                                    JOIN albums ON tracks.albumid = albums.albumid
+                                    JOIN artists ON albums.artistid = artists.artistid 
+                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist,per_page, page)).fetchall()
                 else:
                     data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
-                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist,per_page, ((page-1)*per_page))).fetchall()
+                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist,per_page, page).fetchall()
             elif request.args.get('per_page') and  request.args.get('artist'):
                 per_page = request.args.get('per_page')
                 artist = request.args.get('artist')
