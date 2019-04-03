@@ -141,7 +141,7 @@ def tracks_list():
     cursor.close()
     tracks = [track[0] for track in data ]
     print(tracks)
-    #return json.dump(tracks)
+    return json.dump(tracks)
 
 
 
