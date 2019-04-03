@@ -152,8 +152,8 @@ def tracks_list():
                                         JOIN albums ON tracks.albumid = albums.albumid
                                         JOIN artists ON albums.artistid = artists.artistid 
                                         WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
-            else:
-                data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
+            # else:
+            #     data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
     cursor.close()
     tracks = [track[0] for track in data]
     return jsonify(tracks)
