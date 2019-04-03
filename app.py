@@ -146,9 +146,10 @@ def tracks_list():
 def tracks_with_artist(artist):
     db = get_db()
     cursor = db.cursor()
-    data = cursor.execute("""SELECT tracks.name, artists.name AS artist FROM tracks
+    data = cursor.execute("""SELECT tracks.name, artists.name FROM tracks
                             JOIN albums ON tracks.albumid = albums.albumid
-                            JOIN artists ON albums.artistid = artists.artistid WHERE artist = ?""", (artist,)).fetchall()
+                            JOIN artists ON albums.artistid = artists.artistid 
+                            WHERE artists.name = ? ORDER BY tracks.name""", (artist,)).fetchall()
     cursor.close()
     tracks = [track[0] for track in data]
     return jsonify(tracks)
