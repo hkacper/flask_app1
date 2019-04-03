@@ -150,6 +150,11 @@ def tracks_list():
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
                                     WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
+            elif request.args.get('per_page') and request.args.get('page'):
+                per_page = request.args.get('per_page')
+                page = request.args.get('page')
+                data = cursor.execute("""SELECT name FROM tracks
+                                    ORDER BY name LIMIT ? OFFSET ? COLLATE NOCASE""", (per_page, page*per_page)).fetchall()
             else:
                 data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
             cursor.close()
