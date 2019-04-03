@@ -133,28 +133,40 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+# @app.route('/tracks', methods = ['GET'])
+# def tracks_list():
+#     db = get_db()
+#     cursor = db.cursor()
+#     data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
+#     cursor.close()
+#     tracks = [track[0] for track in data]
+#     return jsonify(tracks)
+
+# @app.route('/tracks/<artist>', methods = ['GET'])
+# def tracks_with_artist(artist):
+#     db = get_db()
+#     cursor = db.cursor()
+#     data = cursor.execute("""SELECT tracks.name FROM tracks
+#                             JOIN albums ON tracks.albumid = albums.albumid
+#                             JOIN artists ON albums.artistid = artists.artistid 
+#                             WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
+#     cursor.close()
+#     tracks = [track[0] for track in data]
+#     return jsonify(tracks)
+
 @app.route('/tracks', methods = ['GET'])
 def tracks_list():
     db = get_db()
     cursor = db.cursor()
-    data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
+    if request.args['artist']:
+        data = cursor.execute("""SELECT tracks.name FROM tracks
+                                JOIN albums ON tracks.albumid = albums.albumid
+                                JOIN artists ON albums.artistid = artists.artistid 
+                                WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
+    #data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
     cursor.close()
     tracks = [track[0] for track in data]
     return jsonify(tracks)
-
-@app.route('/tracks/<artist>', methods = ['GET'])
-def tracks_with_artist(artist):
-    db = get_db()
-    cursor = db.cursor()
-    data = cursor.execute("""SELECT tracks.name FROM tracks
-                            JOIN albums ON tracks.albumid = albums.albumid
-                            JOIN artists ON albums.artistid = artists.artistid 
-                            WHERE artists.name = ? ORDER BY tracks.name""", (artist,)).fetchall()
-    cursor.close()
-    tracks = [track[0] for track in data]
-    return jsonify(tracks)
-
-
 
 
 
