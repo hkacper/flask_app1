@@ -125,7 +125,7 @@ def train(train_id):
 
 
 
-DATABASE = 'chioonk.db'
+DATABASE = 'chinook.db'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -139,7 +139,7 @@ def tracks_list():
     cursor = db.cursor()
     data = cursor.execute('SELECT Name FROM tracks ORDER BY Name ASC').fetchall()
     cursor.close()
-    tracks = [track for track in data ]
+    tracks = [track[0] for track in data ]
     print(tracks)
     return jsonify(tracks)
 
