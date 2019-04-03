@@ -154,7 +154,7 @@ def tracks_list():
                 per_page = request.args.get('per_page')
                 page = request.args.get('page')
                 data = cursor.execute("""SELECT name FROM tracks
-                                    ORDER BY name LIMIT ? OFFSET ? COLLATE NOCASE""", (per_page, page*per_page +1)).fetchall()
+                                        ORDER BY name LIMIT ? OFFSET ? COLLATE NOCASE""", (per_page, (page-1)*per_page +1)).fetchall()
             else:
                 data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
             cursor.close()
