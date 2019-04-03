@@ -133,7 +133,7 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
-@app.route('/tracks')
+@app.route('/tracks', methods = ['GET'])
 def tracks_list():
     db = get_db()
     cursor = db.cursor()
@@ -142,6 +142,16 @@ def tracks_list():
     tracks = [track[0] for track in data]
     return jsonify(sorted(tracks))
 
+@app.route('/tracks/<artist>', methods = ['GET'])
+def tracks_with_artist(artist):
+    db = get_db()
+    cursor = db.cursor()
+    data = cursor.execute("""SELECT tracks.name, artists.name AS artist FROM tracks
+                            JOIN albums ON tracks.name = albums.albumid
+                            JOIN artists ON albums.artistid = artists.artistid WHERE ?""", (artist,)).fetchall()
+    cursor.close()
+    tracks = [track[0] for track in data]
+    return jsonify(tracks)
 
 
 
