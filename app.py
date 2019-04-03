@@ -136,9 +136,10 @@ def get_db():
 def tracks_list():
     db = get_db()
     cursor = db.cursor()
-    data = cursor.execute('SELECT name FROM tracks ORDER BY ASC').fetchall()
+    data = cursor.execute('SELECT name FROM tracks ORDER BY name ASC').fetchall()
     cursor.close()
-    return jsonify([track[0] for track in data ])
+    tracks = [track[0] for track in data ])
+    return json.dump(tracks)
 
 
 
