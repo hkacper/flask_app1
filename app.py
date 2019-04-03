@@ -144,24 +144,26 @@ def tracks_list():
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
                                     WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist,per_page, page*per_page)).fetchall()
-            elif request.args.get('artist'):
-                artist = request.args.get('artist')
-                data = cursor.execute("""SELECT tracks.name FROM tracks
-                                    JOIN albums ON tracks.albumid = albums.albumid
-                                    JOIN artists ON albums.artistid = artists.artistid 
-                                    WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
-            elif request.args.get('per_page') and request.args.get('page'):
-                per_page = request.args.get('per_page')
-                page = request.args.get('page')
-                data = cursor.execute("""SELECT name FROM tracks
-                                        ORDER BY name LIMIT ? OFFSET ? COLLATE NOCASE""", (per_page, (page-1)*per_page +1)).fetchall()
             elif request.args.get('per_page') and  request.args.get('artist'):
                 per_page = request.args.get('per_page')
                 artist = request.args.get('artist')
                 data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
-                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? COLLATE NOCASE""", (artist,per_page)).fetchall()
+                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? COLLATE NOCASE""", (artist,per_page)).fetchall()                                    
+            elif request.args.get('per_page') and request.args.get('page'):
+                per_page = request.args.get('per_page')
+                page = request.args.get('page')
+                data = cursor.execute("""SELECT name FROM tracks
+                                        ORDER BY name LIMIT ? OFFSET ? COLLATE NOCASE""", (per_page, (page-1)*per_page +1)).fetchall()
+            elif request.args.get('artist'):
+                artist = request.args.get('artist')
+                data = cursor.execute("""SELECT tracks.name FROM tracks
+                                    JOIN albums ON tracks.albumid = albums.albumid
+                                    JOIN artists ON albums.artistid = artists.artistid 
+                                    WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
+
+
             else:
                 data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
             cursor.close()
