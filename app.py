@@ -144,7 +144,7 @@ def tracks_list():
                     data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
-                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist,per_page, per_page)).fetchall()
+                                    WHERE artists.name = ? ORDER BY tracks.name  COLLATE NOCASE""", (artist,)).fetchall()
                 else:
                     data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
