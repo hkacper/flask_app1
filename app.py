@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, redirect, session, url_for, Response, g, render_template
 from functools import wraps
+import json
 from uuid import uuid4, UUID
 import sqlite3
 #import datetime
@@ -124,7 +125,7 @@ def train(train_id):
 
 
 
-DATABASE = 'chinook.db'
+DATABASE = ':memory:'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -136,10 +137,11 @@ def get_db():
 def tracks_list():
     db = get_db()
     cursor = db.cursor()
-    data = cursor.execute('SELECT name FROM tracks ORDER BY name ASC').fetchall()
+    data = cursor.execute('SELECT Name FROM tracks ORDER BY Name ASC').fetchall()
     cursor.close()
-    tracks = [track[0] for track in data ])
-    return json.dump(tracks)
+    tracks = [track[0] for track in data ]
+    print(tracks)
+    #return json.dump(tracks)
 
 
 
