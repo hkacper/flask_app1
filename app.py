@@ -160,7 +160,7 @@ def tracks_list():
     cursor = db.cursor()
     if request.method == 'GET':
         # if request.args.get('per_page'):
-        #     per_page = request.args.get('per_page')
+        per_page = request.args.get('per_page')
         if request.args.get('artist'):
             artist = request.args.get('artist')
             data = cursor.execute("""SELECT tracks.name FROM tracks
