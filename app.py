@@ -158,7 +158,7 @@ def get_db():
 def tracks_list():
     db = get_db()
     cursor = db.cursor()
-    if request.args['artist']:
+    if request.args.get('artist'):
         data = cursor.execute("""SELECT tracks.name FROM tracks
                                 JOIN albums ON tracks.albumid = albums.albumid
                                 JOIN artists ON albums.artistid = artists.artistid 
