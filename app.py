@@ -132,13 +132,13 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
-@app.route('/tracks', methods=['GET'])
-def tracks():
+@app.route('/tracks')
+def tracks_list():
     db = get_db()
-    #cursor = db.cursor()
-    data = db.execute('SELECT name FROM tracks ORDER BY ASC')
-    #cursor.close()
-    return jsonify([row[0] for row in data.fetchall()])
+    cursor = db.cursor()
+    data = cursor.execute('SELECT name FROM tracks').fetchall()
+    cursor.close()
+    return render_template('tracks.html', tracks=data)
 
 
 
