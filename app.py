@@ -159,10 +159,11 @@ def tracks_list():
     db = get_db()
     cursor = db.cursor()
     if request.args.get('artist'):
+        artist = request.args.get('artist')
         data = cursor.execute("""SELECT tracks.name FROM tracks
                                 JOIN albums ON tracks.albumid = albums.albumid
                                 JOIN artists ON albums.artistid = artists.artistid 
-                                WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (request.args.get('artist'),)).fetchall()
+                                WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
     #data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
     cursor.close()
     tracks = [track[0] for track in data]
