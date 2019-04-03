@@ -139,9 +139,9 @@ def tracks_list():
     cursor = db.cursor()
     data = cursor.execute('SELECT Name FROM tracks').fetchall()
     cursor.close()
-    tracks = [track[0] for track in data ]
-    print(tracks)
-    return jsonify(tracks.sort())
+    tracks = [track[0] for track in data]
+    lista = tracks.sort()
+    return jsonify(lista)
 
 
 
