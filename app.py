@@ -140,7 +140,7 @@ def tracks_list():
     data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
     cursor.close()
     tracks = [track[0] for track in data]
-    return jsonify(sorted(tracks))
+    return jsonify(tracks)
 
 @app.route('/tracks/<artist>', methods = ['GET'])
 def tracks_with_artist(artist):
