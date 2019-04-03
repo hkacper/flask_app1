@@ -136,10 +136,10 @@ def tracks_list():
     db = get_db()
     cursor = db.cursor()
     if request.method == 'GET':
-        if request.args.get('page'):
-            page = request.args.get('page')
-        else:
-            page = None
+        # if request.args.get('page'):
+        #     page = request.args.get('page')
+        # else:
+        #     page = None
             if request.args.get('per_page'):
                 per_page = request.args.get('per_page')
             else:
