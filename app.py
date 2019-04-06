@@ -140,7 +140,6 @@ def tracks_list():
                 per_page = request.args.get('per_page')
                 page = request.args.get('page')
                 artist = request.args.get('artist')
-                return (page, per_page, artist)
                 if page == 1:
                     data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
@@ -154,6 +153,7 @@ def tracks_list():
             elif request.args.get('per_page') and  request.args.get('artist'):
                 per_page = request.args.get('per_page')
                 artist = request.args.get('artist')
+                return per_page, artist 
                 data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
