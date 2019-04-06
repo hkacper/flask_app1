@@ -169,6 +169,27 @@ def tracks_list():
         cursor.close()
         tracks = [track[0] for track in data]
         return jsonify(tracks)
+    elif request.method == 'POST':
+        if request.get_json() == None:
+            cursor.close()
+            return 400
+        else:
+            album_id = request.form['album_id']
+            media_type_id = request.form['media_type_id']
+            genre_id = request.form['genre_id']
+            name = request.form['name']
+            composer = request.form['composer']
+            milliseconds = request.form['milliseconds']
+            bytes1 = request.form['bytes']
+            price = request.form['price']
+            cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
+                            composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", 
+                            (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
+            cursor.commit()
+            data = cursor.execute("""SELECT * FROM tracks WHERE MAX(trackid)""")
+            cursor.close()
+            return jsonify(data), 200
+
 
 @app.route('/genres', methods = ['GET'])
 def genres():
