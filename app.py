@@ -172,8 +172,6 @@ def tracks_list():
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
                                     WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
-
-
             else:
                 data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
             cursor.close()
@@ -182,6 +180,14 @@ def tracks_list():
 
 
 
+app.route('/genres', methods = ['GET'])
+def genres():
+    db = get_db()
+    cursor = db.cursor()
+    data = cursor.execute("""SELECT COUNT(tracks.name), genres.name FROM tracks 
+                            JOIN genres ON tracks.genreid = genres.genreid""")
+    cursor.close()
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
