@@ -170,14 +170,13 @@ def tracks_list():
         tracks = [track[0] for track in data]
         return jsonify(tracks)
 
-
-
 @app.route('/genres', methods = ['GET'])
 def genres():
     db = get_db()
     cursor = db.cursor()
-    data = cursor.execute("""SELECT COUNT(tracks.name), genres.name FROM tracks, genres 
-                            JOIN genres ON tracks.genreid = genres.genreid GROUP BY genres.name""")
+    data = cursor.execute("""SELECT genres.name, COUNT(tracks.trackid) FROM genres
+                            JOIN tracks ON tracks.genreis = genres.genreid
+                            GROUP BY genres.name""").fetchall()
     cursor.close()
     return jsonify(data)
 
