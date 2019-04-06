@@ -144,12 +144,12 @@ def tracks_list():
                     data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
-                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist,per_page, per_page)).fetchall()
+                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ?, ? COLLATE NOCASE""", (artist,per_page, per_page)).fetchall()
                 else:
                     data = cursor.execute("""SELECT tracks.name FROM tracks
                                     JOIN albums ON tracks.albumid = albums.albumid
                                     JOIN artists ON albums.artistid = artists.artistid 
-                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist,per_page, ((page-1)*per_page))).fetchall()
+                                    WHERE artists.name = ? ORDER BY tracks.name LIMIT ?, ? COLLATE NOCASE""", (artist, (page-1)*per_page, per_page )).fetchall()
             elif request.args.get('per_page') and  request.args.get('artist'):
                 per_page = request.args.get('per_page')
                 artist = request.args.get('artist')
@@ -184,8 +184,8 @@ def tracks_list():
 def genres():
     db = get_db()
     cursor = db.cursor()
-    data = cursor.execute("""SELECT COUNT(tracks.name), genres.name FROM tracks 
-                            JOIN genres ON tracks.genreid = genres.genreid""")
+    data = cursor.execute("""SELECT COUNT(tracks.name), genres.name FROM tracks, genres 
+                            JOIN genres ON tracks.genreid = genres.genreid GROUP BY genres.name""")
     cursor.close()
     return jsonify(data)
 
