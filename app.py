@@ -175,10 +175,10 @@ def genres():
     db = get_db()
     cursor = db.cursor()
     data = cursor.execute("""SELECT genres.name, COUNT(tracks.trackid) FROM genres
-                            JOIN tracks ON tracks.genreis = genres.genreid
+                            JOIN tracks ON tracks.genreid = genres.genreid
                             GROUP BY genres.name""").fetchall()
     cursor.close()
-    return jsonify(data)
+    return (data)
 
 if __name__ == '__main__':
     app.run(debug=True)
