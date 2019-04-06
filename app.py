@@ -178,7 +178,8 @@ def genres():
                             JOIN tracks ON genres.genreid = tracks.genreid
                             GROUP BY genres.name""").fetchall()
     cursor.close()
-    return jsonify(type(data))#, type(jsonify(data)), type(dict(data)), type(dict(data))
+    return jsonify((dict(data))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
