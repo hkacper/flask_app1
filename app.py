@@ -180,7 +180,7 @@ def tracks_list():
 
 
 
-app.route('/genres', methods = ['GET'])
+@app.route('/genres', methods = ['GET'])
 def genres():
     db = get_db()
     cursor = db.cursor()
