@@ -137,8 +137,8 @@ def tracks_list():
     cursor = db.cursor()
     if request.method == 'GET':
         if request.args.get('per_page') and request.args.get('page') and request.args.get('artist'):
-            per_page = request.args.get('per_page')
-            page = request.args.get('page')
+            per_page = int(request.args.get('per_page'))
+            page = int(request.args.get('page'))
             artist = request.args.get('artist')
             offset2 = (page-1)*per_page
             data = cursor.execute("""SELECT tracks.name FROM tracks
