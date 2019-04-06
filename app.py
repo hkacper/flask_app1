@@ -186,9 +186,9 @@ def tracks_list():
                             composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", 
                             (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
             cursor.commit()
-            data = cursor.execute("""SELECT * FROM tracks WHERE MAX(trackid)""")
+            data = cursor.execute("SELECT * FROM tracks WHERE trackid = (SELECT MAX(trackid) FROM tracks)").fetchone()
             cursor.close()
-            return jsonify(data), 200
+            return jsonify(data)
 
 
 @app.route('/genres', methods = ['GET'])
