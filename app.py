@@ -144,7 +144,7 @@ def tracks_list():
         
         if request.args.get('artist'):
             page = int(request.args.get('page')) or 1
-            per_page = int(request.args.get('per_page')) 
+            per_page = int(request.args.get('per_page')) or -1
             artist = request.args.get('artist')
             offset2 = (page-1)*per_page
             data = cursor.execute("""SELECT tracks.name FROM tracks
@@ -153,7 +153,7 @@ def tracks_list():
                             WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist, per_page, offset2 )).fetchall()
         elif request.args.get('page') and request.args.get('per_page'):
             page = int(request.args.get('page')) or 1
-            per_page = int(request.args.get('per_page')) 
+            per_page = int(request.args.get('per_page')) or -1
             offset2 = (page-1)*per_page
             data = cursor.execute('''SELECT name FROM tracks
                                     ORDER BY name COLLATE NOCASE
