@@ -174,14 +174,14 @@ def tracks_list():
             cursor.close()
             return 400
         else:
-            album_id = request.form['album_id']
-            media_type_id = request.form['media_type_id']
-            genre_id = request.form['genre_id']
-            name = request.form['name']
-            composer = request.form['composer']
-            milliseconds = request.form['milliseconds']
-            bytes1 = request.form['bytes']
-            price = request.form['price']
+            album_id = request.get_json.get('album_id')
+            media_type_id = request.get_json.get('media_type_id')
+            genre_id = request.get_json.get('genre_id')
+            name = request.get_json.get('name')
+            composer = request.get_json.get('composer')
+            milliseconds = request.get_json.get('milliseconds')
+            bytes1 = request.get_json.get('bytes')
+            price = request.get_json.get('price')
             cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
                             composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", 
                             (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
