@@ -173,7 +173,7 @@ def tracks_list():
         json_data = request.get_json()
         if json_data == None:
             cursor.close()
-            return 400
+            return Response(status = 400)
         else:
             album_id = json_data['album_id']
             media_type_id = json_data['media_type_id']
