@@ -184,7 +184,7 @@ def tracks_list():
             name = json_data['name']
             composer = json_data['composer']
             milliseconds = json_data['milliseconds']
-            bytes1 = json_data['bytes1']
+            bytes1 = json_data['bytes']
             price = json_data['price']
             cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
                             composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
