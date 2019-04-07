@@ -175,14 +175,14 @@ def tracks_list():
             cursor.close()
             return 400
         else:
-            album_id = json_data.get('album_id')
-            media_type_id = json_data.get('media_type_id')
-            genre_id = json_data.get('genre_id')
-            name = json_data.get('name')
-            composer = json_data.get('composer')
-            milliseconds = json_data.get('milliseconds')
-            bytes1 = json_data.get('bytes')
-            price = json_data.get('price')
+            album_id = json_data['album_id']
+            media_type_id = json_data['media_type_id']
+            genre_id = json_data['genre_id']
+            name = json_data['name']
+            composer = json_data['composer']
+            milliseconds = json_data['milliseconds']
+            bytes1 = json_data['bytes1']
+            price = json_data['price']
             cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
                             composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
             db.commit()
