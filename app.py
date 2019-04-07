@@ -188,7 +188,9 @@ def tracks_list():
             db.commit()
             data = cursor.execute("SELECT * FROM tracks WHERE trackid = (SELECT MAX(trackid) FROM tracks)").fetchone()
             cursor.close()
-            return jsonify(dict(data)), 200
+            return Response(response=jsonify(data),
+                    status=200,
+                    mimetype="application/json")
 
 
 @app.route('/genres', methods = ['GET'])
