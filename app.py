@@ -140,14 +140,15 @@ def tracks_list():
 
         per_page = int(request.args.get('per_page')) 
         page = int(request.args.get('page')) or 1
-        artist = request.args.get('artist')
+        
         offset2 = (page-1)*per_page
-        if artist != None:
+        if request.args.get('artist') is not None:
+            artist = request.args.get('artist')
             data = cursor.execute("""SELECT tracks.name FROM tracks
                             JOIN albums ON tracks.albumid = albums.albumid
                             JOIN artists ON albums.artistid = artists.artistid 
                             WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist, per_page, offset2 )).fetchall()
-        elif page != None and per_page != None:
+        elif page is not None and per_page is not None:
             data = cursor.execute('''SELECT name FROM tracks
                                     ORDER BY name COLLATE NOCASE
                                     LIMIT ? OFFSET ?''', (per_page, offset2)).fetchall()
