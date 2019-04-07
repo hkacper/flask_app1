@@ -171,7 +171,7 @@ def tracks_list():
         return jsonify(tracks)
     elif request.method == 'POST':
         json_data = request.get_json()
-        if json_data == None:
+        if json_data is None:
             cursor.close()
             return 400
         else:
