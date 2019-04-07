@@ -151,7 +151,7 @@ def tracks_list():
                             JOIN albums ON tracks.albumid = albums.albumid
                             JOIN artists ON albums.artistid = artists.artistid 
                             WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist, per_page, offset2 )).fetchall()
-        elif page and per_page:
+        elif request.args.get('page') and request.args.get('per_page'):
             page = int(request.args.get('page')) or 1
             per_page = int(request.args.get('per_page')) 
             offset2 = (page-1)*per_page
