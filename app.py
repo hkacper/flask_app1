@@ -146,13 +146,13 @@ def tracks_list():
                             JOIN albums ON tracks.albumid = albums.albumid
                             JOIN artists ON albums.artistid = artists.artistid 
                             WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist, per_page, offset2 )).fetchall()
-        # elif request.args.get('per_page') and request.args.get('artist'):
-        #     per_page = int(request.args.get('per_page'))
-        #     artist = request.args.get('artist')
-        #     data = cursor.execute("""SELECT tracks.name FROM tracks
-        #                         JOIN albums ON tracks.albumid = albums.albumid
-        #                         JOIN artists ON albums.artistid = artists.artistid 
-        #                         WHERE artists.name = ? ORDER BY tracks.name LIMIT ? COLLATE NOCASE""", (artist, per_page)).fetchall()                                    
+        elif request.args.get('per_page') and request.args.get('artist'):
+            per_page = int(request.args.get('per_page'))
+            artist = request.args.get('artist')
+            data = cursor.execute("""SELECT tracks.name FROM tracks
+                                JOIN albums ON tracks.albumid = albums.albumid
+                                JOIN artists ON albums.artistid = artists.artistid 
+                                WHERE artists.name = ? ORDER BY tracks.name LIMIT ? COLLATE NOCASE""", (artist, per_page)).fetchall()                                    
         elif request.args.get('per_page') and request.args.get('page'):
             per_page = int(request.args.get('per_page'))
             page = int(request.args.get('page'))
