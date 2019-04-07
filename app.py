@@ -150,7 +150,7 @@ def tracks_list():
         elif page != None and per_page != None:
             data = cursor.execute('''SELECT name FROM tracks
                                     ORDER BY name COLLATE NOCASE
-                                    LIMIT ? OFFSET ?'''(per_page, offset2)).fetchall()
+                                    LIMIT ? OFFSET ?''', (per_page, offset2)).fetchall()
         # if request.args.get('per_page') and request.args.get('page') and request.args.get('artist'):
         #     per_page = int(request.args.get('per_page'))
         #     page = int(request.args.get('page'))
