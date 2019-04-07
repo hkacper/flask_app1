@@ -173,11 +173,8 @@ def tracks_list():
 
 
     elif request.method == 'POST':
-        json_data = request.get_json()
-        if json_data == None:
-            cursor.close()
-            return 400
-        else:
+        try:
+            json_data = request.get_json()
             album_id = json_data['album_id']
             media_type_id = json_data['media_type_id']
             genre_id = json_data['genre_id']
@@ -189,9 +186,11 @@ def tracks_list():
             cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
                             composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
             db.commit()
-            data = cursor.execute("SELECT * FROM tracks WHERE trackid = (SELECT MAX(trackid) FROM tracks)").fetchone()
+            data = cursor.execute("SELECT * FROM tracks WHERE trackid = ?", (str(cursor.lastrowid),)).fetchone()
             cursor.close()
-            return jsonify(dict(data)), 200
+            return jsonify(dict(data))
+        except Exeption:
+            return 'No error handling cuz I\'m lazy', 400
 
 
 @app.route('/genres', methods = ['GET'])
