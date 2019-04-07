@@ -170,18 +170,19 @@ def tracks_list():
         tracks = [track[0] for track in data]
         return jsonify(tracks)
     elif request.method == 'POST':
-        if request.get_json() == None:
+        json_data = request.get_json()
+        if json_data == None:
             cursor.close()
             return 400
         else:
-            album_id = request.get_json.get('album_id')
-            media_type_id = request.get_json.get('media_type_id')
-            genre_id = request.get_json.get('genre_id')
-            name = request.get_json.get('name')
-            composer = request.get_json.get('composer')
-            milliseconds = request.get_json.get('milliseconds')
-            bytes1 = request.get_json.get('bytes')
-            price = request.get_json.get('price')
+            album_id = json_data.get('album_id')
+            media_type_id = json_data.get('media_type_id')
+            genre_id = json_data.get('genre_id')
+            name = json_data.get('name')
+            composer = json_data.get('composer')
+            milliseconds = json_data.get('milliseconds')
+            bytes1 = json_data.get('bytes')
+            price = json_data.get('price')
             cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
                             composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", 
                             (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
