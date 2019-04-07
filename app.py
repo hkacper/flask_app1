@@ -109,16 +109,16 @@ def train(train_id):
     if train_id not in app.trains:
         return 'No such train', 404
 
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
         del app.trains[train_id]
         return Response('', 204)
 
-    if request.method == 'PUT':
+    elif request.method == 'PUT':
         set_train(train_id)
     elif request.method == 'PATCH':
         set_train(train_id, update=True)
 
-    if request.method == 'GET' and request.args.get('format') != 'json':
+    elif request.method == 'GET' and request.args.get('format') != 'json':
         pass
 
     return jsonify(app.trains[train_id])
@@ -135,45 +135,62 @@ def get_db():
 def tracks_list():
     db = get_db()
     cursor = db.cursor()
+
     if request.method == 'GET':
-        if request.args.get('per_page') and request.args.get('page') and request.args.get('artist'):
-            per_page = int(request.args.get('per_page'))
-            page = int(request.args.get('page'))
-            artist = request.args.get('artist')
-            offset2 = (page-1)*per_page
+
+        per_page = int(request.args.get('per_page')) 
+        page = int(request.args.get('page')) or 1
+        artist = request.args.get('artist')
+        offset2 = (page-1)*per_page
+        if artist != None:
             data = cursor.execute("""SELECT tracks.name FROM tracks
                             JOIN albums ON tracks.albumid = albums.albumid
                             JOIN artists ON albums.artistid = artists.artistid 
                             WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist, per_page, offset2 )).fetchall()
-        elif request.args.get('per_page') and request.args.get('artist'):
-            per_page = int(request.args.get('per_page'))
-            artist = request.args.get('artist')
-            data = cursor.execute("""SELECT tracks.name FROM tracks
-                                JOIN albums ON tracks.albumid = albums.albumid
-                                JOIN artists ON albums.artistid = artists.artistid 
-                                WHERE artists.name = ? ORDER BY tracks.name LIMIT ? COLLATE NOCASE""", (artist, per_page)).fetchall()                                    
-        elif request.args.get('per_page') and request.args.get('page'):
-            per_page = int(request.args.get('per_page'))
-            page = int(request.args.get('page'))
-            offset2 = (page-1)*per_page
-            data = cursor.execute("""SELECT name FROM tracks
-                                ORDER BY name LIMIT ? OFFSET ? COLLATE NOCASE""", (per_page, offset2)).fetchall()
-        elif request.args.get('artist'):
-            artist = request.args.get('artist')
-            data = cursor.execute("""SELECT tracks.name FROM tracks
-                                JOIN albums ON tracks.albumid = albums.albumid
-                                JOIN artists ON albums.artistid = artists.artistid 
-                                WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
+        elif page != None and per_page != None:
+            data = cursor.execute('''SELECT name FROM tracks
+                                    ORDER BY name COLLATE NOCASE
+                                    LIMIT ? OFFSET ?'''(per_page, offset2)).fetchall()
+        # if request.args.get('per_page') and request.args.get('page') and request.args.get('artist'):
+        #     per_page = int(request.args.get('per_page'))
+        #     page = int(request.args.get('page'))
+        #     artist = request.args.get('artist')
+        #     offset2 = (page-1)*per_page
+        #     data = cursor.execute("""SELECT tracks.name FROM tracks
+        #                     JOIN albums ON tracks.albumid = albums.albumid
+        #                     JOIN artists ON albums.artistid = artists.artistid 
+        #                     WHERE artists.name = ? ORDER BY tracks.name LIMIT ? OFFSET ? COLLATE NOCASE""", (artist, per_page, offset2 )).fetchall()
+        # elif request.args.get('per_page') and request.args.get('artist'):
+        #     per_page = int(request.args.get('per_page'))
+        #     artist = request.args.get('artist')
+        #     data = cursor.execute("""SELECT tracks.name FROM tracks
+        #                         JOIN albums ON tracks.albumid = albums.albumid
+        #                         JOIN artists ON albums.artistid = artists.artistid 
+        #                         WHERE artists.name = ? ORDER BY tracks.name LIMIT ? COLLATE NOCASE""", (artist, per_page)).fetchall()                                    
+        # elif request.args.get('per_page') and request.args.get('page'):
+        #     per_page = int(request.args.get('per_page'))
+        #     page = int(request.args.get('page'))
+        #     offset2 = (page-1)*per_page
+        #     data = cursor.execute("""SELECT name FROM tracks
+        #                         ORDER BY name LIMIT ? OFFSET ? COLLATE NOCASE""", (per_page, offset2)).fetchall()
+        # elif request.args.get('artist'):
+        #     artist = request.args.get('artist')
+        #     data = cursor.execute("""SELECT tracks.name FROM tracks
+        #                         JOIN albums ON tracks.albumid = albums.albumid
+        #                         JOIN artists ON albums.artistid = artists.artistid 
+        #                         WHERE artists.name = ? ORDER BY tracks.name COLLATE NOCASE""", (artist,)).fetchall()
         else:
             data = cursor.execute('SELECT Name FROM tracks ORDER BY Name COLLATE NOCASE').fetchall()
         cursor.close()
         tracks = [track[0] for track in data]
         return jsonify(tracks)
+
+
     elif request.method == 'POST':
         json_data = request.get_json()
         if json_data == None:
             cursor.close()
-            return Response(status = 400)
+            return 400
         else:
             album_id = json_data['album_id']
             media_type_id = json_data['media_type_id']
@@ -188,9 +205,7 @@ def tracks_list():
             db.commit()
             data = cursor.execute("SELECT * FROM tracks WHERE trackid = (SELECT MAX(trackid) FROM tracks)").fetchone()
             cursor.close()
-            return Response(response=jsonify(data),
-                    status=200,
-                    mimetype="application/json")
+            return jsonify(dict(data)), 200
 
 
 @app.route('/genres', methods = ['GET'])
