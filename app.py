@@ -189,7 +189,7 @@ def tracks_list():
             data = cursor.execute("SELECT * FROM tracks WHERE trackid = ?", (str(cursor.lastrowid),)).fetchone()
             cursor.close()
             return jsonify(dict(data))
-        except Exeption:
+        except Exception:
             return 'No error handling cuz I\'m lazy', 400
 
 
