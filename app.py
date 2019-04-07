@@ -129,6 +129,7 @@ def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
+        db.row_factory = sqlite3.Row
     return db
 
 @app.route('/tracks', methods = ['GET', 'POST'])
@@ -183,8 +184,9 @@ def tracks_list():
             milliseconds = json_data['milliseconds']
             bytes1 = json_data['bytes']
             price = json_data['price']
-            cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
-                            composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
+            cursor.execute("""INSERT INTO tracks (Name, AlbumId, MediaTypeId, GenreId, 
+                            Composer, Milliseconds, Bytes, UnitPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                            (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
             db.commit()
             data = cursor.execute("SELECT * FROM tracks WHERE trackid = ?", (str(cursor.lastrowid),)).fetchone()
             cursor.close()
