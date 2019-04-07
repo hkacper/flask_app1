@@ -186,10 +186,10 @@ def tracks_list():
             cursor.execute("""INSERT INTO tracks (name, albumid, mediatypeid, genreid, 
                             composer, milliseconds, bytes, unitprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", 
                             (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes1, price))
-            cursor.commit()
+            #cursor.commit()
             data = cursor.execute("SELECT * FROM tracks WHERE trackid = (SELECT MAX(trackid) FROM tracks)").fetchone()
             cursor.close()
-            return jsonify(dict(data)), 200
+            return jsonify(data), 200
 
 
 @app.route('/genres', methods = ['GET'])
